@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.bbd626a3.css",
-    "main.js": "/static/js/main.2c51c04f.js",
-    "static/js/453.279a6485.chunk.js": "/static/js/453.279a6485.chunk.js",
-    "index.html": "/index.html",
-    "main.bbd626a3.css.map": "/static/css/main.bbd626a3.css.map",
-    "main.2c51c04f.js.map": "/static/js/main.2c51c04f.js.map",
-    "453.279a6485.chunk.js.map": "/static/js/453.279a6485.chunk.js.map"
+    "main.css": "/lithuaningo-delete-account/static/css/main.bbd626a3.css",
+    "main.js": "/lithuaningo-delete-account/static/js/main.c34ee308.js",
+    "static/js/453.279a6485.chunk.js": "/lithuaningo-delete-account/static/js/453.279a6485.chunk.js",
+    "index.html": "/lithuaningo-delete-account/index.html",
+    "main.bbd626a3.css.map": "/lithuaningo-delete-account/static/css/main.bbd626a3.css.map",
+    "main.c34ee308.js.map": "/lithuaningo-delete-account/static/js/main.c34ee308.js.map",
+    "453.279a6485.chunk.js.map": "/lithuaningo-delete-account/static/js/453.279a6485.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bbd626a3.css",
-    "static/js/main.2c51c04f.js"
+    "static/js/main.c34ee308.js"
   ]
 }
