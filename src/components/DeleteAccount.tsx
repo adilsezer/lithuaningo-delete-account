@@ -63,7 +63,7 @@ const DeleteAccount: React.FC = () => {
           throw new Error("Failed to authenticate user.");
         }
 
-        // Delete the user document from Firestore
+        // Delete the user document from Firestore //
         await deleteDoc(doc(firestore, "userProfiles", user.uid));
 
         // Delete the signed-in user
