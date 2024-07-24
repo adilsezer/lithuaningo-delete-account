@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  getAuth,
   signInWithEmailAndPassword,
   signInWithPopup,
   deleteUser,
