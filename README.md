@@ -1,46 +1,65 @@
-# Getting Started with Create React App
+# Lithuaningo Account Deletion Module
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a React component for deleting user accounts in a Firebase-based application. It supports both email/password and Google authentication methods.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Account Deletion**: Users can delete their accounts permanently.
+- **Authentication Methods**: Supports authentication via email/password and Google.
+- **Error Handling**: Provides detailed error messages for various failure scenarios.
+- **Responsive Design**: Built with Tailwind CSS for a responsive and modern user interface.
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Clone the repository**:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+   ```bash
+   git clone https://github.com/adilsezer/lithuaningo-account-deletion.git
+   cd lithuaningo-account-deletion
+   ```
 
-### `npm test`
+2. **Install dependencies**:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```bash
+   npm install
+   ```
 
-### `npm run build`
+3. **Set up Firebase**:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   - Add your Firebase configuration in `src/firebase/initFirebase.ts`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Start the application**:
+   ```bash
+   npm start
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Firebase Setup
 
-### `npm run eject`
+1. **Create a Firebase Project**: If you haven't already, create a Firebase project at [Firebase Console](https://console.firebase.google.com/).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. **Enable Authentication Methods**:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   - Go to the **Authentication** section in Firebase Console.
+   - Enable **Email/Password** and **Google** sign-in methods.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+3. **Configure Firebase in Your Project**:
+   - Copy your Firebase configuration from the Firebase Console and paste it into `src/firebase/initFirebase.ts`.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Styling
 
-## Learn More
+- The component is styled using **Tailwind CSS**.
+- Customize the theme by modifying the `theme` object in `DeleteAccount.tsx`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## License
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project is licensed under the MIT License.
+
+---
+
+For more detailed instructions, refer to the Firebase and React documentation. If you encounter any issues, feel free to open an issue on GitHub.
+
+---
+
+### Contact
+
+For further questions, please contact [lithuaningo@gmail.com](mailto:lithuaningo@gmail.com).

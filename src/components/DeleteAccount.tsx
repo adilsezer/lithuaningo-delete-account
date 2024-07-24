@@ -134,9 +134,9 @@ const DeleteAccount: React.FC = () => {
           Delete Account
         </h2>
         <p className="mb-4" style={{ color: theme.lightText }}>
-          Deleting your account is a permanent action and cannot be undone. All
-          your data will be lost. To proceed, please choose a method to confirm
-          your identity.
+          {method
+            ? "Please enter your credentials to confirm your identity."
+            : "Deleting your account is irreversible. All your data will be permanently removed. To continue, select a method to confirm your identity."}
         </p>
         {error && (
           <div className="mb-4" style={{ color: theme.error }}>
