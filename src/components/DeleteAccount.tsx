@@ -6,7 +6,8 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import "tailwindcss/tailwind.css";
-import { auth } from "../firebase/initFirebase"; // Ensure correct path to your Firebase initialization file
+import { auth, firestore } from "../firebase/initFirebase"; // Ensure correct path to your Firebase initialization file
+import { doc, deleteDoc } from "firebase/firestore"; // Import Firestore functions
 
 const theme = {
   tertiary: "#d5304f",
@@ -61,6 +62,9 @@ const DeleteAccount: React.FC = () => {
         if (!user) {
           throw new Error("Failed to authenticate user.");
         }
+
+        // Delete the user document from Firestore
+        await deleteDoc(doc(firestore, "userProfiles", user.uid));
 
         // Delete the signed-in user
         await deleteUser(user);
