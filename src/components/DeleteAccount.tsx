@@ -177,7 +177,7 @@ const DeleteAccount: React.FC = () => {
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
               style={{
                 borderColor: theme.border,
-                backgroundColor: theme.wordBackground,
+                backgroundColor: theme.background,
                 color: theme.text,
               }}
               required
@@ -190,7 +190,7 @@ const DeleteAccount: React.FC = () => {
               className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2"
               style={{
                 borderColor: theme.border,
-                backgroundColor: theme.wordBackground,
+                backgroundColor: theme.background,
                 color: theme.text,
               }}
               required
@@ -230,7 +230,7 @@ const DeleteAccount: React.FC = () => {
               className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2"
               style={{
                 borderColor: theme.border,
-                backgroundColor: theme.wordBackground,
+                backgroundColor: theme.background,
                 color: theme.text,
               }}
               required
