@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/lithuaningo-delete-account/static/css/main.dd44d887.css",
-    "main.js": "/lithuaningo-delete-account/static/js/main.937e12c5.js",
+    "main.js": "/lithuaningo-delete-account/static/js/main.8ed7feb6.js",
     "index.html": "/lithuaningo-delete-account/index.html",
     "main.dd44d887.css.map": "/lithuaningo-delete-account/static/css/main.dd44d887.css.map",
-    "main.937e12c5.js.map": "/lithuaningo-delete-account/static/js/main.937e12c5.js.map"
+    "main.8ed7feb6.js.map": "/lithuaningo-delete-account/static/js/main.8ed7feb6.js.map"
   },
   "entrypoints": [
     "static/css/main.dd44d887.css",
-    "static/js/main.937e12c5.js"
+    "static/js/main.8ed7feb6.js"
   ]
 }
