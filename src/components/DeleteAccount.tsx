@@ -5,7 +5,6 @@ import {
   signInWithPopup,
   deleteUser,
   GoogleAuthProvider,
-  reauthenticateWithPopup,
 } from "firebase/auth";
 import "tailwindcss/tailwind.css";
 import { auth } from "../firebase/initFirebase"; // Ensure correct path to your Firebase initialization file
@@ -109,6 +108,11 @@ const DeleteAccount: React.FC = () => {
     }
   };
 
+  const handleMethodSwitch = (newMethod: "email" | "google" | null) => {
+    setMethod(newMethod);
+    setError(null); // Reset error when switching methods
+  };
+
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen"
@@ -143,7 +147,7 @@ const DeleteAccount: React.FC = () => {
         {!method && (
           <div className="flex flex-col space-y-4">
             <button
-              onClick={() => setMethod("email")}
+              onClick={() => handleMethodSwitch("email")}
               className="w-full px-4 py-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
               style={{
                 backgroundColor: theme.tertiary,
@@ -153,7 +157,7 @@ const DeleteAccount: React.FC = () => {
               Use Email/Password
             </button>
             <button
-              onClick={() => setMethod("google")}
+              onClick={() => handleMethodSwitch("google")}
               className="w-full px-4 py-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
               style={{
                 backgroundColor: theme.tertiary,
@@ -206,7 +210,7 @@ const DeleteAccount: React.FC = () => {
               {loading ? "Deleting..." : "Delete Account"}
             </button>
             <button
-              onClick={() => setMethod(null)}
+              onClick={() => handleMethodSwitch(null)}
               className="w-full px-4 py-2 mt-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
               style={{
                 backgroundColor: theme.lightText,
@@ -246,7 +250,7 @@ const DeleteAccount: React.FC = () => {
               {loading ? "Deleting..." : "Delete Account"}
             </button>
             <button
-              onClick={() => setMethod(null)}
+              onClick={() => handleMethodSwitch(null)}
               className="w-full px-4 py-2 mt-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
               style={{
                 backgroundColor: theme.lightText,
