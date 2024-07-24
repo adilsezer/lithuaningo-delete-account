@@ -66,6 +66,8 @@ const DeleteAccount: React.FC = () => {
         await deleteUser(user);
 
         alert("Your account has been deleted successfully.");
+        setEmail(""); // Clear the email input field
+        setPassword(""); // Clear the password input field
       } catch (error: any) {
         switch (error.code) {
           case "auth/wrong-password":
