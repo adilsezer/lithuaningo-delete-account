@@ -1,75 +1,261 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
   deleteUser,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
+  GoogleAuthProvider,
+  reauthenticateWithPopup,
 } from "firebase/auth";
+import "tailwindcss/tailwind.css";
+import { auth } from "../firebase/initFirebase"; // Ensure correct path to your Firebase initialization file
 
-const DeleteAccount = () => {
+const theme = {
+  tertiary: "#d5304f",
+  background: "#FFFFFF",
+  text: "#2E3B44",
+  lightText: "#4A5963",
+  border: "#B0BEC5",
+  error: "#d5304f",
+  card: "#F5F7FA",
+  cardText: "#2E3B44",
+  wordBackground: "#f0f0f0",
+};
+
+const DeleteAccount: React.FC = () => {
+  const [method, setMethod] = useState<"email" | "google" | null>(null);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userExists, setUserExists] = useState(false);
-  const [isPasswordProvider, setIsPasswordProvider] = useState(false);
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (user) {
-      setUserExists(true);
-      setIsPasswordProvider(
-        user.providerData.some((provider) => provider.providerId === "password")
-      );
-    } else {
-      setUserExists(false);
-    }
-  }, [user]);
+  const handleDelete = async (providerId: string) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete your account? This action is permanent and cannot be undone."
+    );
+    if (confirm) {
+      setLoading(true);
+      setError(null); // Reset the error message before attempting deletion
+      try {
+        let user;
+        if (providerId === "password") {
+          // Sign in the user with email and password
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          user = userCredential.user;
+        } else if (providerId === "google.com") {
+          // Sign in the user with Google
+          const provider = new GoogleAuthProvider();
+          const userCredential = await signInWithPopup(auth, provider);
+          user = userCredential.user;
 
-  const handleDelete = async () => {
-    if (!user) return;
-    try {
-      const credential = EmailAuthProvider.credential(user.email!, password);
-      await reauthenticateWithCredential(user, credential);
-      await deleteUser(user);
-      alert("Account deleted successfully.");
-    } catch (error: any) {
-      alert(error.message);
+          // Check if the authenticated Google user matches the email provided
+          if (user.email !== email) {
+            throw new Error(
+              "Authenticated Google account does not match the provided email."
+            );
+          }
+        }
+
+        if (!user) {
+          throw new Error("Failed to authenticate user.");
+        }
+
+        // Delete the signed-in user
+        await deleteUser(user);
+
+        alert("Your account has been deleted successfully.");
+      } catch (error: any) {
+        switch (error.code) {
+          case "auth/wrong-password":
+            setError("Incorrect password. Please try again.");
+            break;
+          case "auth/user-not-found":
+            setError("No user found with this email.");
+            break;
+          case "auth/invalid-email":
+            setError("Invalid email format. Please check your email.");
+            break;
+          case "auth/missing-email":
+            setError("Email is required. Please enter your email.");
+            break;
+          case "auth/missing-password":
+            setError("Password is required. Please enter your password.");
+            break;
+          case "auth/too-many-requests":
+            setError("Too many attempts. Please try again later.");
+            break;
+          case "auth/invalid-credential":
+            setError("Invalid credentials. Please try again.");
+            break;
+          case "auth/popup-closed-by-user":
+            setError("Authentication popup closed by user. Please try again.");
+            break;
+          case "auth/popup-blocked":
+            setError(
+              "Popup blocked by the browser. Please allow popups and try again."
+            );
+            break;
+          default:
+            setError(`An unknown error occurred: ${error.message}`);
+            break;
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-6 bg-white rounded shadow-md">
-        <h1 className="mb-4 text-xl font-bold">Delete Account - Lithuaningo</h1>
-        {!userExists ? (
-          <p className="text-gray-700">No user is currently signed in.</p>
-        ) : (
-          <>
-            <p className="mb-4 text-gray-700">
-              Deleting your account is a permanent action and cannot be undone.
-              All your data will be lost.
-            </p>
-            {isPasswordProvider && (
-              <>
-                <p className="mb-4 text-gray-700">
-                  To proceed, please enter your password below to confirm your
-                  identity and delete your account.
-                </p>
-                <input
-                  type="password"
-                  className="w-full p-2 mb-4 border rounded"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </>
-            )}
+    <div
+      className="flex flex-col items-center justify-center min-h-screen"
+      style={{ backgroundColor: theme.background, color: theme.text }}
+    >
+      <div
+        className="p-6 rounded-lg shadow-md w-full max-w-md"
+        style={{ backgroundColor: theme.card }}
+      >
+        <h1
+          className="text-3xl font-bold mb-6 text-center"
+          style={{ color: theme.cardText }}
+        >
+          Lithuaningo
+        </h1>
+        <h2
+          className="text-2xl font-semibold mb-4 text-center"
+          style={{ color: theme.cardText }}
+        >
+          Delete Account
+        </h2>
+        <p className="mb-4" style={{ color: theme.lightText }}>
+          Deleting your account is a permanent action and cannot be undone. All
+          your data will be lost. To proceed, please choose a method to confirm
+          your identity.
+        </p>
+        {error && (
+          <div className="mb-4" style={{ color: theme.error }}>
+            {error}
+          </div>
+        )}
+        {!method && (
+          <div className="flex flex-col space-y-4">
             <button
-              onClick={handleDelete}
-              className="w-full px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+              onClick={() => setMethod("email")}
+              className="w-full px-4 py-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
+              style={{
+                backgroundColor: theme.tertiary,
+                color: theme.background,
+              }}
             >
-              Delete Account
+              Use Email/Password
             </button>
-          </>
+            <button
+              onClick={() => setMethod("google")}
+              className="w-full px-4 py-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
+              style={{
+                backgroundColor: theme.tertiary,
+                color: theme.background,
+              }}
+            >
+              Use Google Account
+            </button>
+          </div>
+        )}
+        {method === "email" && (
+          <div className="flex flex-col space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+              style={{
+                borderColor: theme.border,
+                backgroundColor: theme.wordBackground,
+                color: theme.text,
+              }}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2"
+              style={{
+                borderColor: theme.border,
+                backgroundColor: theme.wordBackground,
+                color: theme.text,
+              }}
+              required
+            />
+            <button
+              onClick={() => handleDelete("password")}
+              className={`w-full px-4 py-2 font-semibold rounded-lg focus:outline-none focus:ring-2 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              style={{
+                backgroundColor: theme.tertiary,
+                color: theme.background,
+              }}
+              disabled={loading}
+            >
+              {loading ? "Deleting..." : "Delete Account"}
+            </button>
+            <button
+              onClick={() => setMethod(null)}
+              className="w-full px-4 py-2 mt-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
+              style={{
+                backgroundColor: theme.lightText,
+                color: theme.background,
+              }}
+            >
+              Switch Deletion Method
+            </button>
+          </div>
+        )}
+        {method === "google" && (
+          <div className="flex flex-col space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2"
+              style={{
+                borderColor: theme.border,
+                backgroundColor: theme.wordBackground,
+                color: theme.text,
+              }}
+              required
+            />
+            <button
+              onClick={() => handleDelete("google.com")}
+              className={`w-full px-4 py-2 font-semibold rounded-lg focus:outline-none focus:ring-2 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              style={{
+                backgroundColor: theme.tertiary,
+                color: theme.background,
+              }}
+              disabled={loading}
+            >
+              {loading ? "Deleting..." : "Delete Account"}
+            </button>
+            <button
+              onClick={() => setMethod(null)}
+              className="w-full px-4 py-2 mt-2 font-semibold rounded-lg focus:outline-none focus:ring-2"
+              style={{
+                backgroundColor: theme.lightText,
+                color: theme.background,
+              }}
+            >
+              Switch Deletion Method
+            </button>
+          </div>
         )}
       </div>
     </div>
